@@ -11,6 +11,7 @@
 POSTGRES_PASSWORD=start
 POSTGRES_DB=postgres
 POSTGRES_PORT=5432`
+
 3. Run the etl:
 `python etl.py`
 
