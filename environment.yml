@@ -1,0 +1,15 @@
+name: UK-ETL
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - console_shortcut
+  - pandas
+  - sqlalchemy
+  - psycopg2
+  - chardet
+  - streamlit
+  - plotly
+prefix: C:\Users\Patrick\anaconda3\envs\UK-ETL
