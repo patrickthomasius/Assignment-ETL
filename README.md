@@ -11,9 +11,13 @@
 POSTGRES_PASSWORD=start
 POSTGRES_DB=postgres
 POSTGRES_PORT=5432`
+3. Run the etl:
+`python etl.py`
 
 Alternatively, I have included a provisonary docker-compose.yml and Dockerfile in the project. Because of the time constraint on this assignment, I wasnt able to verify functionality so setting this project up without Docker is recommended. 
 
+4. to load the visualization, run the visualization script
+`python interactive_dashboard.py`
 ### Explanation of my approach:
 
 Here, a ETL was setup that extracts, transforms, and loads Data from 3 possible sources, one containing Patient Data, one containing Encounters and one containing diagnoses. Each of these required specific transformations and is then loaded into separate tables.
