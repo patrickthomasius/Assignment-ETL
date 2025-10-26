@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  etl:
+    build: .
+    container_name: etl_service
+    command: python etl.py
+    volumes:
+      - .:/app
+    environment:
+      # PostgreSQL connection details
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=start
+      - ENV=production
+      - LOG_LEVEL=info
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: start
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+# Persistent volume for PostgreSQL data
+volumes:
+  pgdata:
