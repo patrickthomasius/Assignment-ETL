@@ -1,13 +1,18 @@
 ## Readme
 
 ### How to setup:
-conda env create -f environment.yml
+### Setup this project (without Docker)
 
-Start Postgresql/Pgadmin on your system.
-Optionally, adjust parameters at the top of the etl.py script.
-Run the etl.py script. 
+1. Create Conda Environment:
+`conda env create -f environment.yml`
+2. Run postgress locally with fitting credentials, or adjust credential in the rag_postgres_llm.py script:
 
-Alternatively, the docker-compose.yml can be used to setup a docker image. 
+`POSTGRES_USER=postgres
+POSTGRES_PASSWORD=start
+POSTGRES_DB=postgres
+POSTGRES_PORT=5432`
+
+Alternatively, I have included a provisonary docker-compose.yml and Dockerfile in the project. Because of the time constraint on this assignment, I wasnt able to verify functionality so setting this project up without Docker is recommended. 
 
 ### Explanation of my approach:
 
