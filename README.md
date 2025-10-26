@@ -34,6 +34,8 @@ For the encounters, similar approaches were taken for the transformation of date
 
 Diagnoses were loaded from the xml that requires a different parsing method but other than that no transformation were applied. In the future it might be beneficial to check the diagnosis codes against their respective code systems for validation. 
 
+It was generally made sure that missing values dont cause errors, but are logged into the log table.
+
 In the second “interactive_dashboard.py” script, a dashboard was created with streamlit that allows interactive display of data, box plots and scatter plots of two numerical values can be displayed. 
 
 AI was used as coding assistance in this Project. 
