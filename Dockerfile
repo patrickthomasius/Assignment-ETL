@@ -5,16 +5,19 @@ FROM continuumio/miniconda3:latest
 WORKDIR /app
 
 # Copy environment file first to leverage Docker caching
-COPY environment.yml .
-
+COPY environment.yml /tmp/environment.yml
+RUN conda env create -f /tmp/environment.yml && conda clean -a
 # Create the conda environment from the yml file
-RUN conda env create -f environment.yml
+SHELL ["conda", "run", "-n", "UK-ETL", "/bin/bash", "-c"]
+
 
 # Make sure the environment is activated in every RUN/CMD
-SHELL ["conda", "run", "-n", "etl_env", "/bin/bash", "-c"]
+RUN conda env list
 
 # Copy the rest of the app code
-COPY . .
-
-# Set default command to run your ETL script
-CMD ["python", "etl.py"]
+COPY etl.py /app/
+COPY data/ /app/data/
+COPY interactive_dashboard.py /app/
+COPY environment.yml /tmp/environment.yml
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "UK-ETL"]
+CMD ["bash", "-c", "python etl.py; streamlit run interactive_dashboard.py --server.port 8501 --server.headless true --server.address 0.0.0.0"]

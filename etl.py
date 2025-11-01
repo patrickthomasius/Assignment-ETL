@@ -1,3 +1,5 @@
+import sys
+print(sys.prefix)
 import pandas as pd
 from sqlalchemy import create_engine
 import unicodedata
@@ -6,6 +8,7 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import json
+import os
 
 #import streamlit as st
 
@@ -13,17 +16,21 @@ import json
 # -------------------------
 # 1 CONFIGURATION
 # -------------------------
-CSV_FILE_ENCOUNTERS = r"C:\Users\Patrick\Desktop\UK-assignment\encounters.csv"
-CSV_FILE_PATIENTS = r"C:\Users\Patrick\Desktop\UK-assignment\patients.csv"  
-XML_FILE_DIAGNOSES = r"C:\Users\Patrick\Desktop\UK-assignment\diagnoses.xml"  
-POSTGRES_USER = "postgres"
-POSTGRES_PASSWORD = "start"
-POSTGRES_HOST = "localhost"
-POSTGRES_PORT = 5432
-POSTGRES_DB = "postgres"
+
+
+
+CSV_FILE_ENCOUNTERS = r"encounters.csv"
+CSV_FILE_PATIENTS = r"patients.csv"  
+XML_FILE_DIAGNOSES = r"diagnoses.xml"  
+POSTGRES_USER = os.getenv("PG_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("PG_PASSWORD", "start")
+POSTGRES_HOST = os.getenv("PG_HOST", "postgres")
+POSTGRES_PORT = os.getenv("PG_PORT", 5432)
+POSTGRES_DB = os.getenv("PG_DB", "postgres")
 TABLE_NAME_PATIENTS = "patients"
 TABLE_NAME_ENCOUNTERS = "encounters"
 TABLE_NAME_DIAGNOSES= "diagnoses"
+
 # -------------------------
 # 2️ EXTRACT: Load CSV
 # -------------------------
@@ -31,6 +38,7 @@ TABLE_NAME_DIAGNOSES= "diagnoses"
 patients_df = pd.read_csv(CSV_FILE_PATIENTS, encoding='utf-8-sig')
 
 # Method for cleaning up encounters.csv
+#TODO for big data use polars instead of pandas for efficiency
 def read_messy_encounters(filepath):
     """
     Read a mixed-delimiter encounters file without dropping any rows.
@@ -566,8 +574,9 @@ def clean_encounters(df):
         })
 
     # --- Invalid encounter_type ---
-    valid_types = ["INPATIENT", "OUTPATIENT", "ED"]
+    valid_types = ["inpatient", "outpatient", "ed"]
     for _, row in df[~df["encounter_type"].isin(valid_types)].iterrows():
+        print(row)
         logs.append({
             "patient_id": row.get("patient_id"),
             "filename": row.get("source_file", CSV_FILE_ENCOUNTERS),
@@ -578,7 +587,6 @@ def clean_encounters(df):
         })
     df.loc[~df["encounter_type"].isin(valid_types), "encounter_type"] = "UNKNOWN"
 
-    # --- Optional: calculate length_of_stay (in hours) ---
     df["length_of_stay_hours"] = (
         (df["discharge_dt"] - df["admit_dt"])
         .dt.total_seconds() / 3600

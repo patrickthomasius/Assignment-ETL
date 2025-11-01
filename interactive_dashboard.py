@@ -7,7 +7,7 @@ import os
 
 POSTGRES_USER = "postgres"
 POSTGRES_PASSWORD = "start"
-POSTGRES_HOST = "localhost"
+POSTGRES_HOST = "postgres"
 POSTGRES_PORT = 5432
 POSTGRES_DB = "postgres"
 
@@ -49,7 +49,7 @@ datetime_cols = df.select_dtypes(include=["datetime64[ns]"]).columns.tolist()
 categorical_cols = df.select_dtypes(include=["object", "bool"]).columns.tolist()
 
 tab1, tab2, tab3, tab4 = st.tabs(["📈 Numeric", "📆 Date/Time", "🔤 Categorical", "Data Quality"])
-if table_choice != "etl_logs":
+if table_choice != "logs":
 
     with tab1:
         if numeric_cols:
@@ -153,14 +153,25 @@ else:
             st.plotly_chart(fig2, use_container_width=True)
 
         # 3️⃣ Affected Patients
-        if "patient_id" in df.columns:
-            total_patients = df["patient_id"].nunique()
-            issues_by_patient = df.groupby("patient_id")["reason"].nunique().reset_index()
-            affected_patients = len(issues_by_patient)
-            st.metric(
-                "🧍 Patients with Data Quality Issues",
-                f"{affected_patients} ({affected_patients/total_patients:.0%})",
-            )
+        if "patient_id" in df.columns and "filename" in df.columns:
+            # Filter rows where "filename" contains "patient" (case-insensitive)
+            df_patient_files = df[df["filename"].str.contains("patient", case=False, na=False)]
+
+            if not df_patient_files.empty:
+                total_patients = df_patient_files["patient_id"].nunique()
+                issues_by_patient = (
+                    df_patient_files.groupby("patient_id")["reason"].nunique().reset_index()
+                )
+                affected_patients = len(issues_by_patient)
+
+                st.metric(
+                    "🧍 Patients with Data Quality Issues (from 'patient' files)",
+                    f"{affected_patients}",
+                )
+            else:
+                st.info("No rows found where 'filename' contains 'patient'.")
+        else:
+            st.warning("Missing 'patient_id' or 'filename' column in logs table.")
 
         # 4️⃣ Drilldown: View by Reason
         st.write("### 🔍 Inspect Specific Issue Type")

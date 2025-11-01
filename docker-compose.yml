@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   etl:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: etl_service
     command: python etl.py
     volumes:
@@ -21,7 +23,7 @@ services:
 
   postgres:
     image: postgres:15
-    container_name: postgres_db
+    container_name: postgres_db_etl
     restart: always
     environment:
       POSTGRES_USER: postgres
@@ -31,7 +33,20 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dashboard_service
+    command: bash -c "streamlit run interactive_dashboard.py --server.port 8501 --server.headless true --server.address 0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - etl
 
 # Persistent volume for PostgreSQL data
 volumes:
   pgdata:
+
