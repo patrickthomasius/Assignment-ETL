@@ -1,6 +1,11 @@
 ## Readme
 
 ### How to setup:
+Clone this repository:
+
+```bash
+git clone https://github.com//patrickthomasius/Assignment-ETL.git
+cd Assignment
 ### Setup this project with Docker (recommended)
 to replicate the runtime, a Dockerfile and a docker-compose file were included in this project.
 
