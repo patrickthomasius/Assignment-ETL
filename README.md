@@ -16,7 +16,7 @@ To build and run the container open a shell inside the folder and run
 
 afterwards run
 
-`docker-compose up -d .` to run the container. This will start a postgres service that runs a fresh postgres instance, as well as the ETL.py to populate the database and the streamlit application to visualize the database
+`docker-compose up -d ` to run the container. This will start a postgres service that runs a fresh postgres instance, as well as the ETL.py to populate the database and the streamlit application to visualize the database
 
 To view the database in a browser on the system, connect to browser to `http://localhost:8501`
 #### Ports
