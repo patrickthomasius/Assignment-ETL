@@ -3,10 +3,15 @@
 ### How to setup:
 ### Setup this project with Docker (recommended)
 to replicate the runtime, a Dockerfile and a docker-compose file were included in this project.
+
 To build and run the container open a shell inside the folder and run
+
 `docker build .` to setup the docker image
+
 afterwards run
+
 `docker-compose up -d .` to run the container. This will start a postgres service that runs a fresh postgres instance, as well as the ETL.py to populate the database and the streamlit application to visualize the database
+
 To view the database in a browser on the system, connect to browser to `http://localhost:8501`
 #### Ports
 This project uses the following ports:
@@ -15,6 +20,7 @@ This project uses the following ports:
 - **8501** – Streamlit web app interface
 
 Make sure these ports are available on your machine before running the project.
+
 You can change them in the `docker-compose.yml` or run command and in the respective scripts (at the start of interactive_dashboard.py, and at the start of etl.py) if needed. 
 
 ### Setup this project (without Docker)
