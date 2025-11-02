@@ -7,7 +7,7 @@ import os
 
 POSTGRES_USER = "postgres"
 POSTGRES_PASSWORD = "start"
-POSTGRES_HOST = "localhost"
+POSTGRES_HOST = "postgres"
 POSTGRES_PORT = 5432
 POSTGRES_DB = "postgres"
 
@@ -48,7 +48,10 @@ numeric_cols = df.select_dtypes(include=["int64", "float64"]).columns.tolist()
 datetime_cols = df.select_dtypes(include=["datetime64[ns]"]).columns.tolist()
 categorical_cols = df.select_dtypes(include=["object", "bool"]).columns.tolist()
 
-tab1, tab2, tab3, tab4 = st.tabs(["📈 Numeric", "📆 Date/Time", "🔤 Categorical", "Data Quality"])
+if table_choice != "logs":
+    tab1, tab2, tab3 = st.tabs(["📈 Numeric", "📆 Date/Time", "🔤 Categorical"])
+else:
+    tab4 = st.tabs(["🧹 Data Quality"])[0]
 if table_choice != "logs":
 
     with tab1:
