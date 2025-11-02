@@ -1,6 +1,22 @@
 ## Readme
 
 ### How to setup:
+### Setup this project with Docker (recommended)
+to replicate the runtime, a Dockerfile and a docker-compose file were included in this project.
+To build and run the container open a shell inside the folder and run
+`docker build .` to setup the docker image
+afterwards run
+`docker-compose up -d .` to run the container. This will start a postgres service that runs a fresh postgres instance, as well as the ETL.py to populate the database and the streamlit application to visualize the database
+To view the database in a browser on the system, connect to browser to `http://localhost:8501`
+## Ports
+This project uses the following ports:
+
+- **5432** – PostgreSQL database
+- **8501** – Streamlit web app interface
+
+Make sure these ports are available on your machine before running the project.
+You can change them in the `docker-compose.yml` or run command and in the respective scripts (at the start of interactive_dashboard.py, and at the start of etl.py) if needed. 
+
 ### Setup this project (without Docker)
 
 1. Create Conda Environment:
@@ -15,10 +31,8 @@ POSTGRES_PORT=5432`
 3. Run the etl:
 `python etl.py`
 
-Alternatively, I have included a provisonary docker-compose.yml and Dockerfile in the project. Because of the time constraint on this assignment, I wasnt able to verify functionality so setting this project up without Docker is recommended. 
-
 4. to load the visualization, run the visualization script
-`python interactive_dashboard.py`
+`streamlit run interactive_dashboard.py`
 ### Explanation of my approach:
 
 Here, a ETL was setup that extracts, transforms, and loads Data from 3 possible sources, one containing Patient Data, one containing Encounters and one containing diagnoses. Each of these required specific transformations and is then loaded into separate tables.
