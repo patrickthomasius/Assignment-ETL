@@ -1,5 +1,3 @@
-import sys
-print(sys.prefix)
 import pandas as pd
 from sqlalchemy import create_engine
 import unicodedata
@@ -8,7 +6,6 @@ import numpy as np
 import xml.etree.ElementTree as ET
 from datetime import datetime
 import json
-import os
 
 #import streamlit as st
 
@@ -16,21 +13,17 @@ import os
 # -------------------------
 # 1 CONFIGURATION
 # -------------------------
-
-
-
-CSV_FILE_ENCOUNTERS = r"encounters.csv"
-CSV_FILE_PATIENTS = r"patients.csv"  
-XML_FILE_DIAGNOSES = r"diagnoses.xml"  
-POSTGRES_USER = os.getenv("PG_USER", "postgres")
-POSTGRES_PASSWORD = os.getenv("PG_PASSWORD", "start")
-POSTGRES_HOST = os.getenv("PG_HOST", "postgres")
-POSTGRES_PORT = os.getenv("PG_PORT", 5432)
-POSTGRES_DB = os.getenv("PG_DB", "postgres")
+CSV_FILE_ENCOUNTERS = r"C:\Users\Patrick\Desktop\UK-assignment\encounters.csv"
+CSV_FILE_PATIENTS = r"C:\Users\Patrick\Desktop\UK-assignment\patients.csv"  
+XML_FILE_DIAGNOSES = r"C:\Users\Patrick\Desktop\UK-assignment\diagnoses.xml"  
+POSTGRES_USER = "postgres"
+POSTGRES_PASSWORD = "start"
+POSTGRES_HOST = "localhost"
+POSTGRES_PORT = 5432
+POSTGRES_DB = "postgres"
 TABLE_NAME_PATIENTS = "patients"
 TABLE_NAME_ENCOUNTERS = "encounters"
 TABLE_NAME_DIAGNOSES= "diagnoses"
-
 # -------------------------
 # 2️ EXTRACT: Load CSV
 # -------------------------
